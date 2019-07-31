@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/backgroundid"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/menuicon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/calendarcardsun"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardmon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/menuicon" />
+
+    <ImageView
+        android:id="@+id/calendarcardmon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardtue"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardsun"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardsun" />
+
+    <ImageView
+        android:id="@+id/calendarcardtue"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardwed"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardmon"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardmon" />
+
+    <ImageView
+        android:id="@+id/calendarcardwed"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardthu"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardtue"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardtue" />
+
+    <ImageView
+        android:id="@+id/calendarcardthu"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardfri"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardwed"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardwed" />
+
+    <ImageView
+        android:id="@+id/calendarcardfri"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/calendarcardsat"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardthu"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardthu" />
+
+    <ImageView
+        android:id="@+id/calendarcardsat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/calendarcardfri"
+        app:layout_constraintTop_toTopOf="@+id/calendarcardfri" />
+
+    <TextView
+        android:id="@+id/suncalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:elevation="2dp"
+        android:scaleType="fitXY"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardsun"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardsun"
+        app:layout_constraintHorizontal_bias="0.46"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardsun"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/moncalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardmon"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardmon"
+        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardmon"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tuecalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardtue"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardtue"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardtue"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/wedcalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardwed"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardwed"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardwed"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/thucalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardthu"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardthu"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardthu"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/fricalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardfri"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardfri"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardfri"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/satcalendardate"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/calendarcardsat"
+        app:layout_constraintEnd_toEndOf="@+id/calendarcardsat"
+        app:layout_constraintStart_toStartOf="@+id/calendarcardsat"
+        tools:ignore="MissingConstraints" />
+
+    <TextClock
+        android:id="@+id/digital_clock"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
+        android:textAlignment="center"
+        android:textSize="108sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarcardsun" />
+
+    <ImageView
+        android:id="@+id/weathericon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/digital_clock" />
+
+    <TextView
+        android:id="@+id/temperaturetext"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitXY"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weathericon" />
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+
