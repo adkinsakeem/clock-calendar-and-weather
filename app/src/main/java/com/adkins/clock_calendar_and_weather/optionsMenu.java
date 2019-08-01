@@ -167,6 +167,11 @@ public class optionsMenu extends Activity {
         });
 
     }
+
+    public void getBackground() {
+        android.support.constraint.ConstraintLayout MainActivityBG = findViewById(R.id.backgroundid);
+        MainActivityBG.setBackground(getResources().getDrawable(R.drawable.beach));
+    }
 /*
     @Override
     public void onClick(View view)

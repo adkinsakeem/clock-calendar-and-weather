@@ -97,9 +97,11 @@ public class MainActivity extends AppCompatActivity {
     //public static GridBagLayout menuButton;
     //static Image[] BGImage = new Image[BGNames.Length];
    // static Grid BGLayers = new Grid();
-    //Context context;
+    Context context;
     public SharedPreferences appSettings;
     public static final String SHARED_PREFS = "sharedPrefs";
+    android.support.constraint.ConstraintLayout MainActivityBG;
+   static View myView;
 
 
     @Override
@@ -111,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appSettings = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        //MainActivityBG = findViewById(R.id.backgroundid);
+        myView = this.findViewById(R.id.backgroundid);
+
         /*ImageView mImageView;
         mImageView = (ImageView) findViewById(R.id.menuicon);
         mImageView.setImageResource(R.drawable.menuicon);*/
@@ -137,12 +142,23 @@ public class MainActivity extends AppCompatActivity {
        // ImageView iv = constraintLayout.findViewById(R.id.backgroundid);
        // iv.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.beach));
         String tempBGIndex = appSettings.getString(BGSavedValue, "Blank");
-        if(Arrays.asList(BGNamesIndex).contains(tempBGIndex)) {
-            android.support.constraint.ConstraintLayout MainActivityBG = findViewById(R.id.backgroundid);
+       /* if(Arrays.asList(BGNamesIndex).contains(tempBGIndex)) {
             MainActivityBG.setBackground(getResources().getDrawable(
                     BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]));
-        }
+        }*/
 
+       /* if(Arrays.asList(BGNamesIndex).contains(tempBGIndex)) {
+            System.out.println("It Has It");
+            myView.setBackgroundResource(R.drawable.beach);
+        }else{
+            myView.setBackgroundResource(R.drawable.blank);
+        }*/
+myView = findViewById(R.id.backgroundid);
+        if(Arrays.asList(BGNamesIndex).contains(tempBGIndex)) {
+            myView.setBackgroundResource(BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]);
+        }else{
+            myView.setBackgroundResource(R.drawable.blank);
+        }
         System.out.println("Temp BG Index" + tempBGIndex);
         System.out.println("BG Index" + BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]);
           /*  if (constraintLayout != null) {
@@ -205,8 +221,14 @@ public class MainActivity extends AppCompatActivity {
 
   public static void update(String BGName){
 
+      if(Arrays.asList(BGNamesIndex).contains(BGName)) {
+          myView.setBackgroundResource(BGNames[Arrays.asList(BGNamesIndex).indexOf(BGName)]);
+      }else{
+          myView.setBackgroundResource(R.drawable.blank);
+      }
       menuOpen = false;
       //getBackground(BGName);
+
 
 
 
