@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.solver.widgets.Helper;
@@ -39,7 +41,9 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import android.support.v4.content.res.ResourcesCompat;
 
-import static com.adkins.clock_calendar_and_weather.optionsMenu.BGSavedValue;
+import static com.adkins.clock_calendar_and_weather.optionsMenu.*;
+//import static com.adkins.clock_calendar_and_weather.optionsMenu.fontColorSavedValue;
+//import static com.adkins.clock_calendar_and_weather.optionsMenu.fontSavedValue;
 
 
 //import static com.adkins.clock_calendar_and_weather.R.id.menuicon;
@@ -67,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     static int[] calendarCards = {R.drawable.calendarcardsun, R.drawable.calendarcardmon,
             R.drawable.calendarcardtue, R.drawable.calendarcardwed, R.drawable.calendarcardthu,
             R.drawable.calendarcardfri, R.drawable.calendarcardsat};
+    private static String[] fontColorList = { "#7fffd4", "#f5f5dc", "#000000", "#0000FF", "#a52a2a", "#00ffff", "#00008b", "#a9a9a9", "#013220", "#8b008b", "#ff8c00", "#8b0000", "#228b22", "#ffd700", "#808080", "#008000", "#ff69b4", "#4b0082", "#967bb6", "#add8e6", "#90ee90", "#ffffed", "#00FF00", "#ff00ff", "#000080", "#ffa500", "#ffc0cb", "#800080", "#FF0000", "#87ceeb", "#ee82ee", "#FFFFFF", "#FFFF00" };
+    private static String[] fontColors = { "Aquamarine", "Beige", "Black", "Blue", "Brown", "Cyan", "Dark Blue", "Dark Gray", "Dark Green", "Dark Magenta", "Dark Orange", "Dark Red", "Forest Green", "Gold", "Gray", "Green", "Hot Pink", "Indigo", "Lavender", "Light Blue", "Light Green", "Light Yellow", "Lime Green", "Magenta", "Navy", "Orange", "Pink", "Purple", "Red", "Sky Blue", "Violet", "White", "Yellow" };
     // string date;
    // private static Label digitalClockDisplay;
     static String usedFontsAndroid = "digital-7.ttf#Digital-7";
@@ -85,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
     public static int[] BGNames = { R.drawable.beach, R.drawable.blank, R.drawable.city, R.drawable.flowers,
             R.drawable.mountains, R.drawable.nightcity, R.drawable.ocean,
             R.drawable.richmond, R.drawable.sky, R.drawable.water };
+    private static String[] usedFonts = { "rabelo_regular.ttf", "digital7.ttf", "bradley_gratis.ttf", "conduit2.ttf",
+            "oldlondon.ttf", "summerfire.ttf" , "oaklandhills1991.ttf", "snowtopcaps.ttf", "hultogsnowdrift.ttf" };
+    private static String[] fontsName = {"Regular", "Digital" , "Gothic", "Bubble", "Old Time",
+            "Fire 01", "Fire 02", "Ice 01", "Ice 02"};
     protected static int BGIndex = 0;
     TextView[] dateView = new TextView[7];
     private double currentTopMargin = 0;
@@ -97,11 +107,20 @@ public class MainActivity extends AppCompatActivity {
     //public static GridBagLayout menuButton;
     //static Image[] BGImage = new Image[BGNames.Length];
    // static Grid BGLayers = new Grid();
-    Context context;
+     static Context context;
     public SharedPreferences appSettings;
     public static final String SHARED_PREFS = "sharedPrefs";
     android.support.constraint.ConstraintLayout MainActivityBG;
    static View myView;
+   static TextView clockColor;
+   static TextView temperatureColor;
+    //AssetManager am = context.getApplicationContext().getAssets();
+    static Typeface customFonts;
+    static TextView clockID;
+    static Typeface custom_font;
+    static AssetManager assets;
+
+
 
 
     @Override
@@ -113,8 +132,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appSettings = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        //MainActivityBG = findViewById(R.id.backgroundid);
         myView = this.findViewById(R.id.backgroundid);
+        assets = context.getAssets();
+
 
         /*ImageView mImageView;
         mImageView = (ImageView) findViewById(R.id.menuicon);
@@ -142,6 +162,10 @@ public class MainActivity extends AppCompatActivity {
        // ImageView iv = constraintLayout.findViewById(R.id.backgroundid);
        // iv.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.beach));
         String tempBGIndex = appSettings.getString(BGSavedValue, "Blank");
+        String tempFontColorIndex = appSettings.getString(fontColorSavedValue, "Black");
+        String tempFontIndex = appSettings.getString(fontSavedValue, "Digital");
+
+
        /* if(Arrays.asList(BGNamesIndex).contains(tempBGIndex)) {
             MainActivityBG.setBackground(getResources().getDrawable(
                     BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]));
@@ -161,6 +185,19 @@ myView = findViewById(R.id.backgroundid);
         }
         System.out.println("Temp BG Index" + tempBGIndex);
         System.out.println("BG Index" + BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]);
+
+        clockColor = (TextView) findViewById(R.id.digital_clock);
+        temperatureColor = (TextView) findViewById(R.id.temperaturetext);
+        clockColor.setTextColor(Color.parseColor(fontColorList[Arrays.asList(fontColors).indexOf(tempFontColorIndex)]));
+        temperatureColor.setTextColor(Color.parseColor(fontColorList[Arrays.asList(fontColors).indexOf(tempFontColorIndex)]));
+
+        //customFonts.createFromAsset(getAssets(), "fonts/" + usedFonts[Arrays.asList(fontsName).indexOf(tempFontColorIndex)]);
+        //clockID = (TextView)findViewById(R.id.digital_clock);
+        Typeface custom_font = Typeface.createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(tempFontIndex)]);
+        clockColor.setTypeface(custom_font);
+
+       // customFonts.setText();
+
           /*  if (constraintLayout != null) {
 
                 constraintLayout.setBackgroundResource(BGNames[Arrays.asList(BGNamesIndex).indexOf(tempBGIndex)]);
@@ -219,13 +256,24 @@ myView = findViewById(R.id.backgroundid);
 
   }*/
 
-  public static void update(String BGName){
-
+  public static void update(String BGName, String fontColorName, String fontName){
+//***Update Background**********************************************************************
       if(Arrays.asList(BGNamesIndex).contains(BGName)) {
           myView.setBackgroundResource(BGNames[Arrays.asList(BGNamesIndex).indexOf(BGName)]);
       }else{
           myView.setBackgroundResource(R.drawable.blank);
       }
+ //****************************************************************************************
+
+ //***Update Font Color********************************************************************
+      clockColor.setTextColor(Color.parseColor(fontColorList[Arrays.asList(fontColors).indexOf(fontColorName)]));
+      temperatureColor.setTextColor(Color.parseColor(fontColorList[Arrays.asList(fontColors).indexOf(fontColorName)]));
+//*****************************************************************************************
+
+      //***Update Font*********************************************************************
+       custom_font = Typeface.createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(fontName)]);
+       clockColor.setTypeface(custom_font);
+       //***********************************************************************************
       menuOpen = false;
       //getBackground(BGName);
 
@@ -492,7 +540,7 @@ public void getBackground(String BGName){
             TextView menuIcon = findViewById(R.id.temperaturetext);
 
         menuIcon.setText(Math.round((tempPass -273.15)*(9/5)+32)+"°");
-        menuIcon.setTextColor(Color.parseColor(tempColor));
+        //menuIcon.setTextColor(Color.parseColor(tempColor));
         }});
     }
 

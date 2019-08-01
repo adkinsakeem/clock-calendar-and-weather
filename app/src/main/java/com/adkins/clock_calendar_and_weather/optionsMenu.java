@@ -20,8 +20,10 @@ import java.util.List;
 public class optionsMenu extends Activity {
 
     private String[] BGNames = { "Beach", "Blank", "City", "Flowers", "Mountains", "NightCity", "Ocean", "Richmond", "Sky", "Water" };
-    private String[] usedFonts = { "Rabelo Regular.ttf#Rabelo", "digital-7.ttf#Digital-7", "Bradley Gratis.ttf#Bradley Gratis", "conduit2.ttf#Conduit 2", "OldLondon.ttf#Old London", "CracklingFire.ttf#CracklingFire" , "SnowtopCaps.ttf#Snowtop Caps" };
-    private String[] fontsName = {"Regular", "Digital" , "Gothic", "Bubble", "Old Time", "Fire", "Ice"};
+    private static String[] usedFonts = { "rabelo_regular.ttf", "digital7.ttf", "bradley_gratis.ttf", "conduit2.ttf",
+            "oldlondon.ttf", "summerfire.ttf" , "oaklandhills1991.ttf", "snowtopcaps.ttf", "hultogsnowdrift.ttf" };
+    private String[] fontsName = {"Regular", "Digital" , "Gothic", "Bubble", "Old Time",
+            "Fire 01", "Fire 02", "Ice 01", "Ice 02"};
     private String[] fontColorList = { "#7fffd4", "#f5f5dc", "#000000", "#0000FF", "#a52a2a", "#00ffff", "#00008b", "#a9a9a9", "#013220", "#8b008b", "#ff8c00", "#8b0000", "#228b22", "#ffd700", "#808080", "#008000", "#ff69b4", "#4b0082", "#967bb6", "#add8e6", "#90ee90", "#ffffed", "#00FF00", "#ff00ff", "#000080", "#ffa500", "#ffc0cb", "#800080", "#FF0000", "#87ceeb", "#ee82ee", "#FFFFFF", "#FFFF00" };
     private String[] fontColors = { "Aquamarine", "Beige", "Black", "Blue", "Brown", "Cyan", "Dark Blue", "Dark Gray", "Dark Green", "Dark Magenta", "Dark Orange", "Dark Red", "Forest Green", "Gold", "Gray", "Green", "Hot Pink", "Indigo", "Lavender", "Light Blue", "Light Green", "Light Yellow", "Lime Green", "Magenta", "Navy", "Orange", "Pink", "Purple", "Red", "Sky Blue", "Violet", "White", "Yellow" };
     public Spinner BGSpinner;
@@ -92,7 +94,7 @@ public class optionsMenu extends Activity {
     public void fontColorList() {
         String tempFontColor = "Black";
 
-        if(appSettings.contains("fontColorSavedValue"))
+        if(appSettings.contains(fontColorSavedValue))
         tempFontColor = appSettings.getString(fontColorSavedValue, "Black");
 
         FontColorSpinner = (Spinner) findViewById(R.id.fontColorList);
@@ -114,7 +116,7 @@ public class optionsMenu extends Activity {
     public void fontList() {
         String tempFont = "Digital";
 
-        if(appSettings.contains("fontColorSavedValue"))
+        if(appSettings.contains(fontSavedValue))
             tempFont = appSettings.getString(fontSavedValue, "Digital");
 
         FontSpinner = (Spinner) findViewById(R.id.textFontList);
@@ -135,8 +137,8 @@ public class optionsMenu extends Activity {
     public void getZipCode() {
         String tempZipCode = "23227";
 
-        if(appSettings.contains("fontColorSavedValue"))
-            tempZipCode = appSettings.getString(zipCodeValue, "23227");
+        //if(appSettings.contains(zipCodeValue))
+            //tempZipCode = appSettings.getString(zipCodeValue, "23227");
 
         EditText zipEdit = (EditText)findViewById(R.id.zipCodeTextBox);
         zipEdit.setText(tempZipCode);
@@ -151,7 +153,10 @@ public class optionsMenu extends Activity {
                 System.out.println("checkSpinnerValue: "+ BGSpinner.getSelectedItem().toString());
                 saveData();
                 System.out.println("checkBGValue: "+ appSettings.getString(BGSavedValue, "Blank"));
-                MainActivity.update(appSettings.getString(BGSavedValue, "Blank"));
+                MainActivity.update(appSettings.getString(BGSavedValue, "Blank"),
+                                    appSettings.getString(fontColorSavedValue, "Black"),
+                                    appSettings.getString(fontSavedValue, "Digital"));
+
                 finish();
                 return true;
             }
@@ -168,10 +173,6 @@ public class optionsMenu extends Activity {
 
     }
 
-    public void getBackground() {
-        android.support.constraint.ConstraintLayout MainActivityBG = findViewById(R.id.backgroundid);
-        MainActivityBG.setBackground(getResources().getDrawable(R.drawable.beach));
-    }
 /*
     @Override
     public void onClick(View view)
@@ -188,9 +189,9 @@ public class optionsMenu extends Activity {
 
 
     public void saveData(){
+        SharedPreferences.Editor editor = appSettings.edit();
+
         //***Saving Background Data*******************************************
-    //SharedPreferences appSettings = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-    SharedPreferences.Editor editor = appSettings.edit();
     editor.putString(BGSavedValue, BGSpinner.getSelectedItem().toString());
     //************************************************************************
 
