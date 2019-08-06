@@ -41,6 +41,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import android.support.v4.content.res.ResourcesCompat;
 
+import static android.graphics.Typeface.createFromAsset;
 import static com.adkins.clock_calendar_and_weather.optionsMenu.*;
 //import static com.adkins.clock_calendar_and_weather.optionsMenu.fontColorSavedValue;
 //import static com.adkins.clock_calendar_and_weather.optionsMenu.fontSavedValue;
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     TextView[] dateView = new TextView[7];
     private double currentTopMargin = 0;
     private Locale locale;
-    private String weatherZipCode = "23227";
+    private String weatherZipCode = "abcde";
     private String tempColor = "#ffffff";
     static ConstraintLayout constraintLayout;
     //private static LocalDate today = LocalDate.now();
@@ -115,11 +116,8 @@ public class MainActivity extends AppCompatActivity {
    static TextView clockColor;
    static TextView temperatureColor;
     //AssetManager am = context.getApplicationContext().getAssets();
-    static Typeface customFonts;
+    static ArrayList<Typeface> customFonts = new ArrayList<Typeface>();
     static TextView clockID;
-    static Typeface custom_font;
-    static AssetManager assets;
-
 
 
 
@@ -133,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         appSettings = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         myView = this.findViewById(R.id.backgroundid);
-        assets = context.getAssets();
+        storeFonts();
 
 
         /*ImageView mImageView;
@@ -147,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
     private void MainPageLayout()
     {
         //MainLayout = new RelativeLayout;
-
-
         setContentView(R.layout.activity_main);
         //MainLayout = (RelativeLayout)findViewById(R.id.backgroundid);
        MenuButton();
@@ -193,8 +189,8 @@ myView = findViewById(R.id.backgroundid);
 
         //customFonts.createFromAsset(getAssets(), "fonts/" + usedFonts[Arrays.asList(fontsName).indexOf(tempFontColorIndex)]);
         //clockID = (TextView)findViewById(R.id.digital_clock);
-        Typeface custom_font = Typeface.createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(tempFontIndex)]);
-        clockColor.setTypeface(custom_font);
+       // Typeface custom_font = createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(tempFontIndex)]);
+        clockColor.setTypeface(customFonts.get(Arrays.asList(fontsName).indexOf(tempFontIndex)));
 
        // customFonts.setText();
 
@@ -271,9 +267,10 @@ myView = findViewById(R.id.backgroundid);
 //*****************************************************************************************
 
       //***Update Font*********************************************************************
-       custom_font = Typeface.createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(fontName)]);
-       clockColor.setTypeface(custom_font);
-       //***********************************************************************************
+     // custom_font = createFromAsset(assets,  "fonts/"+usedFonts[Arrays.asList(fontsName).indexOf(fontName)]);
+      // clockColor.setTypeface(custom_font);
+      clockColor.setTypeface(customFonts.get(Arrays.asList(fontsName).indexOf(fontName)));
+      //***********************************************************************************
       menuOpen = false;
       //getBackground(BGName);
 
@@ -291,6 +288,12 @@ public void getBackground(String BGName){
 }
 
 
+public void storeFonts(){
+
+      for(int x=0; usedFonts.length > x; x++){
+          customFonts.add(createFromAsset(getAssets(), "fonts/"+usedFonts[x]));
+      }
+}
     public void screenSizeCheck()
         {
             DisplayMetrics metrics = new DisplayMetrics();
@@ -389,6 +392,7 @@ public void getBackground(String BGName){
         }
 
         public void WeatherAPICall() {
+
             OkHttpClient weatherClient = new OkHttpClient();
             URL Weatherurl;
             String weatherURL = ("http://api.openweathermap.org/data/2.5/weather?zip="+
@@ -405,10 +409,13 @@ public void getBackground(String BGName){
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
+                    System.out.println("Test01");
                     if(response.isSuccessful()){
+                        System.out.println("Test02");
                        String weatherResponse = response.body().string();
-                        OpenWeatherMap weatherObject = new Gson().fromJson(weatherResponse,OpenWeatherMap.class);
-
+                        System.out.println("Test03");
+                        OpenWeatherMap weatherObject = new Gson().fromJson(weatherResponse,OpenWeatherMap.class);                        System.out.println("Test01");
+                        System.out.println("Test04");
                         SimpleDateFormat timeFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(currentTime);
@@ -424,6 +431,7 @@ public void getBackground(String BGName){
 
                         double tempPass = weatherObject.getMain().getTemp();
                         String iconPass = (weatherObject.getWeather().get(0).getMain()).toLowerCase();
+                        System.out.println("IconPass = " + iconPass);
 
                        if((todaysDate.compareTo(sunriseTime) >= 0) && (todaysDate.compareTo(sunsetTime) < 0)){
                                 findDayTimeIcon(iconPass);
@@ -432,6 +440,8 @@ public void getBackground(String BGName){
                            }
 
                         getTemperature(tempPass);
+                    }else if(!response.isSuccessful()){
+                        System.out.println("I think I finally got the failure");
                     }
                 }
             }));

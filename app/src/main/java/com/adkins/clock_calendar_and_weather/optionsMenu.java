@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,24 +61,32 @@ public class optionsMenu extends Activity {
         int height = dm.heightPixels;
 
         getWindow().setLayout((int) (width * .8), (int) (height * .6));
-
+        ConstraintLayout constraintLayout = findViewById(R.id.menuid);
+        TextView menuTitle =  findViewById(R.id.menuTitle);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)menuTitle.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+        menuTitle.setTextSize((float) (48 * .8));
+        menuTitle.setLayoutParams(params);
         backgroundImageList();
         fontColorList();
         fontList();
         getZipCode();
         buttonActions();
+        layoutSizes();
     }
 
 
     public void backgroundImageList() {
         String tempBG = "Blank";
-        System.out.println("Hits Here");
 
         if(appSettings.contains(BGSavedValue))
           tempBG = appSettings.getString(BGSavedValue,"Blank");
       // tempBGIndex = appSettings.getInt(BGSavedValue, 1);
 
         BGSpinner = (Spinner) findViewById(R.id.backgroundList);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)BGSpinner.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+        params.height = (int) (params.height * .8);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, BGNames);
@@ -98,6 +107,8 @@ public class optionsMenu extends Activity {
         tempFontColor = appSettings.getString(fontColorSavedValue, "Black");
 
         FontColorSpinner = (Spinner) findViewById(R.id.fontColorList);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)FontColorSpinner.getLayoutParams();
+        params.height = (int) (params.height * .8);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, fontColors);
@@ -120,6 +131,8 @@ public class optionsMenu extends Activity {
             tempFont = appSettings.getString(fontSavedValue, "Digital");
 
         FontSpinner = (Spinner) findViewById(R.id.textFontList);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)FontSpinner.getLayoutParams();
+        params.height = (int) (params.height * .8);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, fontsName);
@@ -137,11 +150,16 @@ public class optionsMenu extends Activity {
     public void getZipCode() {
         String tempZipCode = "23227";
 
-        //if(appSettings.contains(zipCodeValue))
-            //tempZipCode = appSettings.getString(zipCodeValue, "23227");
+        if(appSettings.contains(zipCodeValue))
+            tempZipCode = appSettings.getString(zipCodeValue, "23227");
+        System.out.println("Temp Zip: "+tempZipCode);
 
         EditText zipEdit = (EditText)findViewById(R.id.zipCodeTextBox);
         zipEdit.setText(tempZipCode);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)zipEdit.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+
+
     }
 
     public void buttonActions(){
@@ -173,20 +191,49 @@ public class optionsMenu extends Activity {
 
     }
 
-/*
-    @Override
-    public void onClick(View view)
-    {
-        switch (view.getId()) {
-            case R.id.OKButton:
-                saveData();
-                dismiss();
-                finish();
-            case R.id.CancelButton:
 
-        }
-    }*/
+    public void layoutSizes(){
+        View DividerBGtoMenu = (View) findViewById(R.id.menuBGDivider);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)DividerBGtoMenu.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+        params.topMargin = (int) (params.topMargin * .8);
 
+        View DividerFonttoBG = (View) findViewById(R.id.BGFontColorDivider);
+        params = (ConstraintLayout.LayoutParams)DividerFonttoBG.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+        params.topMargin = (int) (params.topMargin * .8);
+
+        View DividerColortoText = (View) findViewById(R.id.fontColorTextDivider);
+        params = (ConstraintLayout.LayoutParams)DividerColortoText.getLayoutParams();
+        params.bottomMargin = (int) (params.bottomMargin * .8);
+        params.topMargin = (int) (params.topMargin * .8);
+
+        View DividerZiptoText = (View) findViewById(R.id.textFontZipDivider);
+        params = (ConstraintLayout.LayoutParams)DividerZiptoText.getLayoutParams();
+        params.bottomMargin = (int) (24 * .8);
+        params.topMargin = (int) (24 * .8);
+
+        TextView BGImageTitle = (TextView) findViewById(R.id.backgroundColorText);
+        BGImageTitle.setTextSize((float) (24 * .8));
+
+        TextView fontColorTitle = (TextView) findViewById(R.id.fontColorText);
+        fontColorTitle.setTextSize((float) (24 * .8));
+
+        TextView fontTitle = (TextView) findViewById(R.id.chooseFontText);
+        fontTitle.setTextSize((float) (24 * .8));
+
+        TextView zipCodeTitle = (TextView) findViewById(R.id.chooseZipCode);
+        zipCodeTitle.setTextSize((float) (24 * .8));
+
+        TextView cancelB = (TextView) findViewById(R.id.CancelButton);
+        params = (ConstraintLayout.LayoutParams)cancelB.getLayoutParams();
+        params.topMargin = (int) (params.topMargin * .8);
+
+        TextView OkB = (TextView) findViewById(R.id.OKButton);
+        params = (ConstraintLayout.LayoutParams)OkB.getLayoutParams();
+        params.topMargin = (int) (params.topMargin * .8);
+
+    }
 
     public void saveData(){
         SharedPreferences.Editor editor = appSettings.edit();
@@ -203,8 +250,9 @@ public class optionsMenu extends Activity {
     editor.putString(fontSavedValue, FontSpinner.getSelectedItem().toString());
     //***************************************************************
 
-    //***Saving Fonts Data*******************************************
-    editor.putString(zipCodeValue, (findViewById(R.id.zipCodeTextBox).toString()));
+    //***Saving Zip Code*******************************************
+        TextView tempzip = findViewById(R.id.zipCodeTextBox);
+    editor.putString(zipCodeValue, (tempzip.getText().toString()));
     //***************************************************************
 editor.commit();
 
