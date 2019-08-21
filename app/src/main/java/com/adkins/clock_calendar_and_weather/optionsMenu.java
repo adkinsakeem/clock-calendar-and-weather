@@ -1,7 +1,6 @@
 package com.adkins.clock_calendar_and_weather;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -13,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,11 +35,6 @@ public class optionsMenu extends Activity {
     public static final String zipCodeValue = "23227";
     private Button okButton;
     private Button cancelButton;
-
-
-    public static final String SWITCH1 = "switch1";
-
-
     public static int[] BGNamesDrawable = {R.drawable.beach, R.drawable.blank, R.drawable.city, R.drawable.flowers,
             R.drawable.mountains, R.drawable.nightcity, R.drawable.ocean,
             R.drawable.richmond, R.drawable.sky, R.drawable.water};
@@ -81,7 +73,6 @@ public class optionsMenu extends Activity {
 
         if(appSettings.contains(BGSavedValue))
           tempBG = appSettings.getString(BGSavedValue,"Blank");
-      // tempBGIndex = appSettings.getInt(BGSavedValue, 1);
 
         BGSpinner = (Spinner) findViewById(R.id.backgroundList);
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)BGSpinner.getLayoutParams();
@@ -152,7 +143,6 @@ public class optionsMenu extends Activity {
 
         if(appSettings.contains(zipCodeValue))
             tempZipCode = appSettings.getString(zipCodeValue, "23227");
-        System.out.println("Temp Zip: "+tempZipCode);
 
         EditText zipEdit = (EditText)findViewById(R.id.zipCodeTextBox);
         zipEdit.setText(tempZipCode);
@@ -170,10 +160,10 @@ public class optionsMenu extends Activity {
             public boolean onTouch(View v, MotionEvent event){
                 System.out.println("checkSpinnerValue: "+ BGSpinner.getSelectedItem().toString());
                 saveData();
-                System.out.println("checkBGValue: "+ appSettings.getString(BGSavedValue, "Blank"));
                 MainActivity.update(appSettings.getString(BGSavedValue, "Blank"),
                                     appSettings.getString(fontColorSavedValue, "Black"),
-                                    appSettings.getString(fontSavedValue, "Digital"));
+                                    appSettings.getString(fontSavedValue, "Digital"),
+                                    appSettings.getString(zipCodeValue, "23227"));
 
                 finish();
                 return true;
@@ -185,6 +175,7 @@ public class optionsMenu extends Activity {
             public boolean onTouch(View v, MotionEvent event){
                 finish();
                 MainActivity.menuOpen = false;
+                MainActivity.runWeatherAPI = false;
                 return true;
             }
         });
@@ -257,9 +248,5 @@ public class optionsMenu extends Activity {
 editor.commit();
 
 
+    }
 }
-
-
-
-
-        }
