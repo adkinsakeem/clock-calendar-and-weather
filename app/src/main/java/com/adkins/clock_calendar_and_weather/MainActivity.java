@@ -1,13 +1,12 @@
 package com.adkins.clock_calendar_and_weather;
 
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.*;
 import java.io.IOException;
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     static double weatherIconHeight;
     static double topAndBottomMargin;
     Date currentTime = Calendar.getInstance().getTime();
-    static String[] dateLetters = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+    //static String[] dateLetters = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
     static int[] calendarCardID = {R.id.calendarcardsun, R.id.calendarcardmon,
             R.id.calendarcardtue, R.id.calendarcardwed, R.id.calendarcardthu,
             R.id.calendarcardfri, R.id.calendarcardsat};
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private static String[] fontColors = { "Aquamarine", "Beige", "Black", "Blue", "Brown", "Cyan", "Dark Blue", "Dark Gray", "Dark Green", "Dark Magenta", "Dark Orange", "Dark Red", "Forest Green", "Gold", "Gray", "Green", "Hot Pink", "Indigo", "Lavender", "Light Blue", "Light Green", "Light Yellow", "Lime Green", "Magenta", "Navy", "Orange", "Pink", "Purple", "Red", "Sky Blue", "Violet", "White", "Yellow" };
     private String WeatherApiKey = "76068897e190edfaf19250bc4c2e2968";
     public static boolean menuOpen = false;
-    RelativeLayout MainLayout;
+    //RelativeLayout MainLayout;
     private static String[] BGNamesIndex = { "Beach", "Blank", "City", "Flowers", "Mountains", "NightCity", "Ocean", "Richmond", "Sky", "Water" };
     public static int[] BGNames = { R.drawable.beach, R.drawable.blank, R.drawable.city, R.drawable.flowers,
             R.drawable.mountains, R.drawable.nightcity, R.drawable.ocean,
@@ -65,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
             "oldlondon.ttf", "summerfire.ttf" , "oaklandhills1991.ttf", "snowtopcaps.ttf", "hultogsnowdrift.ttf" };
     private static String[] fontsName = {"Regular", "Digital" , "Gothic", "Bubble", "Old Time",
             "Fire 01", "Fire 02", "Ice 01", "Ice 02"};
-    protected static int BGIndex = 0;
+    //protected static int BGIndex = 0;
     TextView[] dateView = new TextView[7];
     private double currentTopMargin = 0;
     private Locale locale;
     private static String weatherZipCode = "23227";
     private String tempColor = "#ffffff";
-    static ConstraintLayout constraintLayout;
-    static Context context;
+    //static ConstraintLayout constraintLayout;
+    //static Context context;
     public SharedPreferences appSettings;
     public static final String SHARED_PREFS = "sharedPrefs";
     android.support.constraint.ConstraintLayout MainActivityBG;
@@ -80,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
     static TextView clockColor;
     static TextView temperatureColor;
     static ArrayList<Typeface> customFonts = new ArrayList<Typeface>();
-    static TextView clockID;
-    static Boolean runWeatherAPI = new Boolean(false);
+    //static TextView clockID;
+    static Boolean runWeatherAPI = false;
 
 
 
@@ -179,6 +178,7 @@ public void storeFonts(){
             topAndBottomMargin = (pageHeight /200);
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         private void MenuButton(){
 
          ImageView menuIcon =(ImageView) findViewById(R.id.menuicon);
@@ -189,7 +189,7 @@ public void storeFonts(){
             menuIcon.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event){
-                if(menuOpen == false) {
+                if(!menuOpen) {
                     menuOpen = true;
                     startActivity(new Intent(MainActivity.this, optionsMenu.class));
                     refreshWeatherAPI();
@@ -213,7 +213,7 @@ public void storeFonts(){
             double labelMargin;
             String BeginningDateString = "";
             String TodaysDateString = "";
-            int dateIDs[] = {R.id.suncalendardate, R.id.moncalendardate, R.id.tuecalendardate,
+            int[] dateIDs = {R.id.suncalendardate, R.id.moncalendardate, R.id.tuecalendardate,
                     R.id.wedcalendardate, R.id.thucalendardate, R.id.fricalendardate, R.id.satcalendardate};
             ImageView[] calendarImages = new ImageView[7];
             currentTopMargin += topAndBottomMargin + menuButtonSize;
@@ -285,7 +285,7 @@ public void storeFonts(){
     }
 
     public void checkWeatherAPI(Timer weatherAPITimer){
-        if(menuOpen == false) {
+        if(!menuOpen) {
 
             WeatherAPICall();
             weatherAPITimer.cancel();
@@ -313,9 +313,10 @@ public void storeFonts(){
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if(response.isSuccessful()){
-                       String weatherResponse = response.body().string();
+                        assert response.body() != null;
+                        String weatherResponse = response.body().string();
                         OpenWeatherMap weatherObject = new Gson().fromJson(weatherResponse,OpenWeatherMap.class);
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat timeFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                         Calendar cal = Calendar.getInstance();
                         cal.setTime(currentTime);
                         Date todaysDate = cal.getTime();
@@ -337,7 +338,7 @@ public void storeFonts(){
                            }
 
                         getTemperature(tempPass);
-                    }else if(!response.isSuccessful()){
+                    }else{
                         findDayTimeIcon("badzip");
 
                     }
@@ -390,7 +391,7 @@ public void storeFonts(){
                 break;
         }
 
-       getWeatherIcon(iconPass, WIcon);
+       getWeatherIcon(WIcon);
 
     }
 
@@ -431,14 +432,14 @@ public void storeFonts(){
                     WIcon = R.drawable.clearskynight;
                     break;
         }
-       getWeatherIcon(iconPass, WIcon);
+       getWeatherIcon(WIcon);
 
     }
 
-    public void getWeatherIcon(String iconPass, final int WIcon){
+    public void getWeatherIcon(final int WIcon){
         runOnUiThread(new Runnable() {
             public void run(){
-            ImageView weatherIcon = (ImageView) findViewById(R.id.weathericon);
+            ImageView weatherIcon = findViewById(R.id.weathericon);
             Drawable weatherIconDraw = getResources().getDrawable(WIcon);
             weatherIcon.setImageDrawable(weatherIconDraw);
                 android.view.ViewGroup.LayoutParams layoutParams = weatherIcon.getLayoutParams();
@@ -450,6 +451,7 @@ public void storeFonts(){
 
     public void getTemperature(final double tempPass) {
         runOnUiThread(new Runnable() {
+            @SuppressLint("SetTextI18n")
             public void run(){
 
             TextView menuIcon = findViewById(R.id.temperaturetext);
@@ -473,16 +475,6 @@ public void storeFonts(){
         private String name;
         private int cod;
 
-        public  OpenWeatherMap() {
-        }
-
-        public  OpenWeatherMap(List<Weather> weatherList, String base, Main main, int dt, Sys sys, int id, String name, int cod) {
-            this.weather = weatherList;
-            this.main = main;
-            this.sys = sys;
-            this.id = id;
-            this.name = name;
-        }
 
         public  List<Weather> getWeather() {
             return weather;
